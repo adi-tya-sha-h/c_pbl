@@ -8,7 +8,8 @@ inventory, and customer feedback. The system should ensure timely order
 processing and secure data storage.
 
 
-##Authors
+## Authors
+
 | Role | Name |
 |---|---|
 | Team Lead | Aditya Shah |
