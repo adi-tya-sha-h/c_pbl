@@ -37,5 +37,6 @@ All three modules save their data to text files — orders.txt, inventory.txt, a
 | Team Member | Chandan Singh Rawat |
 
 - **College:** Graphic Era Hill University, Dehradun  
-- **Course:** Programming for Problem Solving (B.Tech CSE)  
+- **Course:** B.Tech C.S.E
+- **Subject:** PBL - Programming In Problem Solving 
 - **Assignment:** Project Based Learning – Semester Project
