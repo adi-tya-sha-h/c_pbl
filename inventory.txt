@@ -1,4 +1,10 @@
-3
+9
 momos 10 40.00
-spring rolls 10 30.00
-hot dog 10 20.00
+spring 0 0.00
+rolls 10 30.00
+momos 30 40.00
+spring 0 0.00
+momos 30 40.00
+spring rolls 40 40.00
+bun tikki 40 20.00
+dite coke 37 40.00
