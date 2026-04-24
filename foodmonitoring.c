@@ -4,6 +4,10 @@
 
 #define MAX 50
 
+<<<<<<< Updated upstream
+=======
+// 🔹 Structures
+>>>>>>> Stashed changes
 struct inventoryitem{
     char name[50];
     int stock;
@@ -73,16 +77,31 @@ void add_item(){
         printf("INVENTORY IS FULL!");
         return;
     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     printf("Enter item name: ");
     scanf(" ");
     fgets(inventory[item_count].name,50,stdin);
     inventory[item_count].name[strcspn(inventory[item_count].name,"\n")] = '\0';
+<<<<<<< Updated upstream
     printf("Enter Stock: ");
     scanf("%d",&inventory[item_count].stock);
     printf("Enter Rate: ");
     scanf("%f",&inventory[item_count].rate);
+=======
+
+    printf("Enter Stock: ");
+    scanf("%d",&inventory[item_count].stock);
+
+    printf("Enter Rate: ");
+    scanf("%f",&inventory[item_count].rate);
+
+>>>>>>> Stashed changes
     item_count++;
     save_inventory();
+
     printf("Item added!\n");
 }
 
@@ -91,8 +110,14 @@ void view_inventory(){
         printf("INVENTORY IS EMPTY Y.Y\n");
         return;
     }
+<<<<<<< Updated upstream
     printf("\nNO.\t\tITEM\t\tSTOCK\t\tPRICE\n");
+=======
+
+    printf("\n%-5s %-20s %-10s %-10s\n","NO.","ITEM","STOCK","PRICE");
+>>>>>>> Stashed changes
     printf("----------------------------------------------\n");
+
     for(int i=0;i<item_count;i++){
         printf("%d\t\t%s\t\t%d\t\t%f\n",
        i+1,
@@ -107,11 +132,22 @@ void inventory_menu(){
         printf("\nINVENTORY\n");
         printf("1.Add Item\n2.View Inventory\n0.Back\nChoice: ");
         scanf("%d",&ch);
+<<<<<<< Updated upstream
         if(ch==1) add_item();
         else if(ch==2) view_inventory();
     } while(ch!=0);
 }
 
+=======
+
+        if(ch==1) add_item();
+        else if(ch==2) view_inventory();
+
+    } while(ch!=0);
+}
+
+
+>>>>>>> Stashed changes
 void place_order(){
     if(item_count==0){
         printf("No items available!\n");
@@ -154,6 +190,95 @@ void order_menu(){
     }while(ch!=0);
 }
 
+<<<<<<< Updated upstream
+=======
+void bills_menu(){
+
+}
+void save_feedback(){
+    FILE *f=fopen("feedback.txt","w");
+    fprintf(f,"%d\n",feedback_count);
+    for(int i=0;i<feedback_count;i++){
+        fprintf(f,"%s %d %s",
+            feedbacks[i].customer,
+            feedbacks[i].rating,
+            feedbacks[i].comment);
+    }
+    fclose(f);
+}
+void load_feedback(){
+    FILE *f=fopen("feedback.txt","r");
+    if(f==NULL) return;
+    fscanf(f,"%d",&feedback_count);
+    for(int i=0;i<feedback_count;i++){
+        fscanf(f,"%s %d %s",
+            feedbacks[i].customer,
+            &feedbacks[i].rating,
+            feedbacks[i].comment
+            );
+    }
+    fclose(f);
+}
+
+void give_feedback(){
+    if(feedback_count>=MAX){
+        printf("Feedback limit reached!");
+        return;
+    }
+    printf("Enter your name: ");
+    scanf(" ");
+    fgets(feedbacks[feedback_count].customer,50,stdin);
+    feedbacks[feedback_count].customer[strcspn(feedbacks[feedback_count].customer,"\n")] = '\0';
+    printf("Enter rating(1-5): ");
+    scanf("%d",&feedbacks[feedback_count].rating);
+    printf("Enter comment: ");
+    scanf(" ");
+    fgets(feedbacks[feedback_count].comment,50,stdin);
+    feedbacks[feedback_count].comment[strcspn(feedbacks[feedback_count].comment,"\n")] = '\0';
+    feedback_count++;
+    save_feedback();
+    printf("Feedback submitted!");
+}
+
+void view_feedback(){
+    if(feedback_count==0){
+        printf("No feedback yet!");
+        return;
+    }
+    printf("%-15s %-8s %s\n",
+        "CUSTOMER",
+        "RATING",
+        "COMMENT");
+    printf("----------------------------------------------\n");
+    for(int i=0;i<feedback_count;i++){
+        printf("%-15s %-8d %s\n",
+            feedbacks[i].customer,
+            feedbacks[i].rating,
+            feedbacks[i].comment);
+    }
+}
+void feedback_menu(){
+    int ch;
+    do{
+        printf("\nCUSTOMER FEEDBACK MENU\n");
+        printf("1.Give Feedback\n");
+        printf("2.View Feedback\n");
+        printf("0.Back\n");
+        printf("Choice: ");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1: 
+                give_feedback(); 
+                break;
+            case 2: 
+                view_feedback(); 
+                break;
+        }
+    }while(ch!=0);
+}
+
+
+>>>>>>> Stashed changes
 int main(){
     load_inventory();
     int ch;
@@ -174,6 +299,15 @@ int main(){
             case 2: 
                 order_menu(); 
                 break;
+<<<<<<< Updated upstream
+=======
+            case 3:
+                bills_menu();
+                break;
+            case 4:
+                feedback_menu();
+                break;
+>>>>>>> Stashed changes
             case 0:
                 printf("HAVE A NICE DAY"); 
                 break;
