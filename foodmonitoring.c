@@ -124,44 +124,31 @@ void place_order(){
         printf("No items available!\n");
         return;
     }
-
     struct order *o=&orders[order_count];
-
     printf("Enter Order ID: ");
     scanf("%d",&o->id);
-
     printf("Enter Customer Name: ");
     scanf("%s",o->cus_name);
-
     view_inventory();
-
     int choice;
     printf("Select item number: ");
     scanf("%d",&choice);
-
     if(choice<1 || choice>item_count){
         printf("Invalid choice!\n");
         return;
     }
-
     int index=choice-1;
-
     printf("Enter quantity: ");
     scanf("%d",&o->quantity);
-
     if(inventory[index].stock < o->quantity){
         printf("Not enough stock!\n");
         return;
     }
-
     inventory[index].stock -= o->quantity;
-
     o->itemIndex = index;
     o->total = o->quantity * inventory[index].rate;
-
     order_count++;
     save_inventory();
-
     printf("Order placed successfully!\n");
 }
 
@@ -171,9 +158,7 @@ void order_menu(){
         printf("\nORDER MENU\n");
         printf("1.Place Order\n0.Back\nChoice: ");
         scanf("%d",&ch);
-
         if(ch==1) place_order();
-
     }while(ch!=0);
 }
 
@@ -184,7 +169,7 @@ int main(){
     do{
         printf("ONLINE FOOD MONITORING SYSTEM\n");
         printf("1.Inventory Management\n");
-        printf("2.Order Management\n");
+        printf("2.Place Order\n");
         printf("3.Bill\n");
         printf("4.Customer feedback\n");
         printf("0.Exit\n");
