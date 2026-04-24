@@ -4,7 +4,6 @@
 
 #define MAX 50
 
-// 🔹 Structures
 struct inventoryitem{
     char name[50];
     int stock;
@@ -54,6 +53,7 @@ void save_inventory(){
     }
     fclose(f);
 }
+
 void load_inventory(){
     FILE *f=fopen("inventory.txt","r");
     if(f==NULL) return;
@@ -73,21 +73,16 @@ void add_item(){
         printf("INVENTORY IS FULL!");
         return;
     }
-
     printf("Enter item name: ");
     scanf(" ");
     fgets(inventory[item_count].name,50,stdin);
     inventory[item_count].name[strcspn(inventory[item_count].name,"\n")] = '\0';
-
     printf("Enter Stock: ");
     scanf("%d",&inventory[item_count].stock);
-
     printf("Enter Rate: ");
     scanf("%f",&inventory[item_count].rate);
-
     item_count++;
     save_inventory();
-
     printf("Item added!\n");
 }
 
@@ -96,17 +91,14 @@ void view_inventory(){
         printf("INVENTORY IS EMPTY Y.Y\n");
         return;
     }
-
-    printf("\n%-5s %-20s %-10s %-10s\n","NO.","ITEM","STOCK","PRICE");
+    printf("\nNO.\t\tITEM\t\tSTOCK\t\tPRICE\n");
     printf("----------------------------------------------\n");
-
     for(int i=0;i<item_count;i++){
-        printf("%-5d %-20s %-10d %.2f\n",
-            i+1,
-            inventory[i].name,
-            inventory[i].stock,
-            inventory[i].rate);
-    }
+        printf("%d\t\t%s\t\t%d\t\t%f\n",
+       i+1,
+       inventory[i].name,
+       inventory[i].stock,
+       inventory[i].rate);
 }
 
 void inventory_menu(){
@@ -115,13 +107,10 @@ void inventory_menu(){
         printf("\nINVENTORY\n");
         printf("1.Add Item\n2.View Inventory\n0.Back\nChoice: ");
         scanf("%d",&ch);
-
         if(ch==1) add_item();
         else if(ch==2) view_inventory();
-
     } while(ch!=0);
 }
-
 
 void place_order(){
     if(item_count==0){
@@ -167,7 +156,6 @@ void order_menu(){
 
 int main(){
     load_inventory();
-
     int ch;
     do{
         printf("ONLINE FOOD MONITORING SYSTEM\n");
