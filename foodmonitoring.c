@@ -4,8 +4,7 @@
 
 #define MAX 50
 
-
-
+// 🔹 Structures
 struct inventoryitem{
     char name[50];
     int stock;
@@ -13,7 +12,7 @@ struct inventoryitem{
 };
 
 struct order{
-    int id;
+    int order_id;
     char cus_name[50];
     int itemIndex;
     int quantity;
@@ -49,15 +48,16 @@ void save_inventory(){
     fprintf(f,"%d\n",item_count);
     for(int i=0;i<item_count;i++){
         fprintf(f,"%s %d %.2f\n",
-        inventory[i].name,
-        inventory[i].stock,
-        inventory[i].rate);
+            inventory[i].name,
+            inventory[i].stock,
+            inventory[i].rate);
     }
     fclose(f);
 }
 void load_inventory(){
     FILE *f=fopen("inventory.txt","r");
     if(f==NULL) return;
+
     fscanf(f,"%d",&item_count);
     for(int i=0;i<item_count;i++){
         fscanf(f,"%s %d %f",
@@ -66,7 +66,6 @@ void load_inventory(){
             &inventory[i].rate);
     }
     fclose(f);
-
 }
 
 void add_item(){
@@ -74,17 +73,21 @@ void add_item(){
         printf("INVENTORY IS FULL!");
         return;
     }
-    struct inventoryitem *it=&inventory[item_count];
-    printf("Enter item name :");
+
+    printf("Enter item name: ");
     scanf(" ");
-    fgets(it->name,sizeof(it->name),stdin);
-    it->name[strcspn(it->name, "\n")] = '\0';
-    printf("Enter Stock:");
-    scanf("%d",&it->stock);
-    printf("Enter Rate:");
-    scanf("%f",&it->rate);
+    fgets(inventory[item_count].name,50,stdin);
+    inventory[item_count].name[strcspn(inventory[item_count].name,"\n")] = '\0';
+
+    printf("Enter Stock: ");
+    scanf("%d",&inventory[item_count].stock);
+
+    printf("Enter Rate: ");
+    scanf("%f",&inventory[item_count].rate);
+
     item_count++;
     save_inventory();
+
     printf("Item added!\n");
 }
 
@@ -93,8 +96,10 @@ void view_inventory(){
         printf("INVENTORY IS EMPTY Y.Y\n");
         return;
     }
+
     printf("\n%-5s %-20s %-10s %-10s\n","NO.","ITEM","STOCK","PRICE");
     printf("----------------------------------------------\n");
+
     for(int i=0;i<item_count;i++){
         printf("%-5d %-20s %-10d %.2f\n",
             i+1,
@@ -108,27 +113,25 @@ void inventory_menu(){
     int ch;
     do{
         printf("\nINVENTORY\n");
-        printf("1.Add Item\n2.View Inventory\n0.Back\n Choice: ");
+        printf("1.Add Item\n2.View Inventory\n0.Back\nChoice: ");
         scanf("%d",&ch);
-        if(ch==1){
-            add_item();
-        }
-        else if(ch==2){
-            view_inventory();
-        }
+
+        if(ch==1) add_item();
+        else if(ch==2) view_inventory();
+
     } while(ch!=0);
 }
+
 
 void place_order(){
     if(item_count==0){
         printf("No items available!\n");
         return;
     }
-    struct order *o=&orders[order_count];
     printf("Enter Order ID: ");
-    scanf("%d",&o->id);
+    scanf("%d",&orders[order_count].order_id);
     printf("Enter Customer Name: ");
-    scanf("%s",o->cus_name);
+    scanf("%s",orders[order_count].cus_name);
     view_inventory();
     int choice;
     printf("Select item number: ");
@@ -139,14 +142,14 @@ void place_order(){
     }
     int index=choice-1;
     printf("Enter quantity: ");
-    scanf("%d",&o->quantity);
-    if(inventory[index].stock < o->quantity){
+    scanf("%d",&orders[order_count].quantity);
+    if(inventory[index].stock < orders[order_count].quantity){
         printf("Not enough stock!\n");
         return;
     }
-    inventory[index].stock -= o->quantity;
-    o->itemIndex = index;
-    o->total = o->quantity * inventory[index].rate;
+    inventory[index].stock -= orders[order_count].quantity;
+    orders[order_count].itemIndex = index;
+    orders[order_count].total =orders[order_count].quantity * inventory[index].rate;
     order_count++;
     save_inventory();
     printf("Order placed successfully!\n");
@@ -177,9 +180,17 @@ int main(){
         scanf("%d",&ch);
         printf("\n");
         switch(ch){
-            case 1:inventory_menu(); break;
-            case 0:printf("HAVE A NICE DAY"); break;
-            default: printf("INVALID choice.\n");
+            case 1:
+                inventory_menu(); 
+                break;
+            case 2: 
+                order_menu(); 
+                break;
+            case 0:
+                printf("HAVE A NICE DAY"); 
+                break;
+            default: 
+                printf("INVALID choice.\n");
         }
     }while(ch!=0);
     return 0;
