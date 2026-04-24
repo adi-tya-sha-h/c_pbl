@@ -14,10 +14,10 @@ struct inventoryitem{
 
 struct order{
     int id;
-    char customer[50];
-    int item[50];
+    char cus_name[50];
+    int itemIndex;
     int quantity;
-    float price;
+    float total;
 };
 
 struct feedback{
@@ -27,13 +27,11 @@ struct feedback{
 };
 
 struct Bill {
-    int   order_id;
-    char  customer[50];
-    char  item[50];
-    int   quantity;
-    float subtotal;
-    float gst;
-    float grand_total;
+    int order_id;
+    char cus_name[50];
+    char item[50];
+    int quantity;
+    float total_price;
 };
 
 struct order orders[MAX];
@@ -119,6 +117,64 @@ void inventory_menu(){
             view_inventory();
         }
     } while(ch!=0);
+}
+
+void place_order(){
+    if(item_count==0){
+        printf("No items available!\n");
+        return;
+    }
+
+    struct order *o=&orders[order_count];
+
+    printf("Enter Order ID: ");
+    scanf("%d",&o->id);
+
+    printf("Enter Customer Name: ");
+    scanf("%s",o->cus_name);
+
+    view_inventory();
+
+    int choice;
+    printf("Select item number: ");
+    scanf("%d",&choice);
+
+    if(choice<1 || choice>item_count){
+        printf("Invalid choice!\n");
+        return;
+    }
+
+    int index=choice-1;
+
+    printf("Enter quantity: ");
+    scanf("%d",&o->quantity);
+
+    if(inventory[index].stock < o->quantity){
+        printf("Not enough stock!\n");
+        return;
+    }
+
+    inventory[index].stock -= o->quantity;
+
+    o->itemIndex = index;
+    o->total = o->quantity * inventory[index].rate;
+
+    order_count++;
+    save_inventory();
+
+    printf("Order placed successfully!\n");
+}
+
+void order_menu(){
+    int ch;
+    do{
+        printf("\nORDER MENU\n");
+        printf("1.Place Order\n0.Back\nChoice: ");
+        scanf("%d",&ch);
+
+        if(ch==1) place_order();
+
+    }while(ch!=0);
 }
 
 int main(){
