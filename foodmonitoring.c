@@ -125,7 +125,7 @@ void inventory_menu(){
 
 // ORDER
 void save_orders(){
-FILE *f = fopen("order.txt","w");
+    FILE *f = fopen("order.txt","w");
     fprintf(f,"%d\n",order_count);
 
     for(int i=0;i<order_count;i++){
@@ -161,46 +161,61 @@ void place_order(){
         printf("No items available!\n");
         return;
     }
+
     printf("Enter Order ID: ");
     scanf("%d",&orders[order_count].order_id);
+
     printf("Enter Customer Name: ");
     scanf("%s",orders[order_count].cus_name);
+
     view_inventory();
+
     int choice;
     printf("Select item number: ");
     scanf("%d",&choice);
+
     if(choice<1 || choice>item_count){
         printf("Invalid choice!\n");
         return;
     }
+
     int index=choice-1;
+
     printf("Enter quantity: ");
     scanf("%d",&orders[order_count].quantity);
+
     if(inventory[index].stock < orders[order_count].quantity){
         printf("Not enough stock!\n");
         return;
     }
+
     inventory[index].stock -= orders[order_count].quantity;
+
     orders[order_count].itemIndex = index;
-    orders[order_count].total =orders[order_count].quantity * inventory[index].rate;
+    orders[order_count].total =
+        orders[order_count].quantity * inventory[index].rate;
+
     order_count++;
     save_inventory();
+    save_orders();
+
     printf("Order placed successfully!\n");
 }
 
 void order_menu(){
     int ch;
     do{
-        printf("\nORDER MENU\n");
-        printf("1.Place Order\n0.Back\nChoice: ");
+        printf("\nORDER MENU\n1.Place Order\n0.Back\nChoice: ");
         scanf("%d",&ch);
+
         if(ch==1) place_order();
+
     }while(ch!=0);
 }
 
 //BILL
-void bills_menu(){
-FILE *f = fopen("bill.txt","w");
+void save_bills(){
+    FILE *f = fopen("bill.txt","w");
     fprintf(f,"%d\n",bill_count);
 
     for(int i=0;i<bill_count;i++){
@@ -214,7 +229,6 @@ FILE *f = fopen("bill.txt","w");
 
     fclose(f);
 }
-
 void generate_bill(){
     if(order_count==0){
         printf("No orders available!\n");
@@ -229,7 +243,8 @@ void generate_bill(){
         if(orders[i].order_id == id){
 
             int idx = orders[i].itemIndex;
-             bills[bill_count].order_id = orders[i].order_id;
+
+            bills[bill_count].order_id = orders[i].order_id;
             strcpy(bills[bill_count].cus_name, orders[i].cus_name);
             strcpy(bills[bill_count].item, inventory[idx].name);
             bills[bill_count].quantity = orders[i].quantity;
@@ -376,7 +391,7 @@ int main(){
                 order_menu(); 
                 break;
             case 3:
-                bills_menu();
+                bill_menu();
                 break;
             case 4:
                 feedback_menu();
