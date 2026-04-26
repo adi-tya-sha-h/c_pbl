@@ -125,10 +125,36 @@ void inventory_menu(){
 
 // ORDER
 void save_orders(){
+FILE *f = fopen("order.txt","w");
+    fprintf(f,"%d\n",order_count);
 
+    for(int i=0;i<order_count;i++){
+        fprintf(f,"%d %s %d %d %.2f\n",
+            orders[i].order_id,
+            orders[i].cus_name,
+            orders[i].itemIndex,
+            orders[i].quantity,
+            orders[i].total);
+    }
+
+    fclose(f);
 }
 void load_orders(){
-    
+    FILE *f = fopen("order.txt","r");
+    if(f==NULL) return;
+
+    fscanf(f,"%d",&order_count);
+
+    for(int i=0;i<order_count;i++){
+        fscanf(f,"%d %s %d %d %f",
+            &orders[i].order_id,
+            orders[i].cus_name,
+            &orders[i].itemIndex,
+            &orders[i].quantity,
+            &orders[i].total);
+    }
+
+    fclose(f);
 }
 void place_order(){
     if(item_count==0){
@@ -174,8 +200,75 @@ void order_menu(){
 
 //BILL
 void bills_menu(){
+FILE *f = fopen("bill.txt","w");
+    fprintf(f,"%d\n",bill_count);
 
+    for(int i=0;i<bill_count;i++){
+        fprintf(f,"%d %s %s %d %.2f\n",
+            bills[i].order_id,
+            bills[i].cus_name,
+            bills[i].item,
+            bills[i].quantity,
+            bills[i].total_price);
+    }
+
+    fclose(f);
 }
+
+void generate_bill(){
+    if(order_count==0){
+        printf("No orders available!\n");
+        return;
+    }
+
+    int id;
+    printf("Enter Order ID: ");
+    scanf("%d",&id);
+
+    for(int i=0;i<order_count;i++){
+        if(orders[i].order_id == id){
+
+            int idx = orders[i].itemIndex;
+             bills[bill_count].order_id = orders[i].order_id;
+            strcpy(bills[bill_count].cus_name, orders[i].cus_name);
+            strcpy(bills[bill_count].item, inventory[idx].name);
+            bills[bill_count].quantity = orders[i].quantity;
+            bills[bill_count].total_price = orders[i].total;
+
+            printf("\n========== BILL ==========\n");
+            printf("Order ID: %d\n", bills[bill_count].order_id);
+            printf("Customer: %s\n", bills[bill_count].cus_name);
+            printf("--------------------------\n");
+            printf("Item\tQty\tTotal\n");
+            printf("%s\t%d\t%.2f\n",
+                bills[bill_count].item,
+                bills[bill_count].quantity,
+                bills[bill_count].total_price);
+            printf("--------------------------\n");
+            printf("Grand Total: %.2f\n", bills[bill_count].total_price);
+            printf("==========================\n");
+
+            bill_count++;
+            save_bills();
+            return;
+        }
+    }
+
+    printf("Order not found!\n");
+}
+
+void bill_menu(){
+    int ch;
+    do{
+        printf("\nBILL MENU\n1.Generate Bill\n0.Back\nChoice: ");
+        scanf("%d",&ch);
+
+        if(ch==1) generate_bill();
+
+    }while(ch!=0);
+}
+
+
 
 //FEEDBACK
 void save_feedback(){
@@ -262,6 +355,7 @@ void feedback_menu(){
 
 int main(){
     load_inventory();
+    load_orders();
     load_feedback();
     int ch;
     do{
