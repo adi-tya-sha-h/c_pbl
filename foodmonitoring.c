@@ -157,6 +157,10 @@ void load_orders(){
     fclose(f);
 }
 void place_order(){
+    if(order_count>=MAX){
+        printf("Order limit reached!\n");
+        return;
+    }
     if(item_count==0){
         printf("No items available!\n");
         return;
@@ -247,6 +251,10 @@ void load_bills(){
 }
 
 void generate_bill(){
+    if(bill_count>=MAX){
+        printf("Bill limit reached!\n");
+        return;
+    }
     if(order_count==0){
         printf("No orders available!\n");
         return;
