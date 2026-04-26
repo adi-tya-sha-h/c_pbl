@@ -42,5 +42,5 @@ All three modules save their data to text files — inventory.txt, order.txt, bi
 
 - **College:** Graphic Era Hill University, Dehradun  
 - **Course:** B.Tech C.S.E
-- **Subject:** PBL - Programming In Problem Solving 
-- **Assignment:** Project Based Learning – Semester Project
+- **Subject:** Programming In Problem Solving 
+- **Assignment:** Project Based Learning
