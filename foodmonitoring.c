@@ -229,6 +229,23 @@ void save_bills(){
 
     fclose(f);
 }
+
+void load_bills(){
+    FILE *f = fopen("bill.txt","r");
+    if(f==NULL) return;
+
+    fscanf(f,"%d",&bill_count);
+    for(int i=0;i<bill_count;i++){
+        fscanf(f,"%d %s %s %d %f",
+            &bills[i].order_id,
+            bills[i].cus_name,
+            bills[i].item,
+            &bills[i].quantity,
+            &bills[i].total_price);
+    }
+    fclose(f);
+}
+
 void generate_bill(){
     if(order_count==0){
         printf("No orders available!\n");
@@ -371,6 +388,7 @@ void feedback_menu(){
 int main(){
     load_inventory();
     load_orders();
+    load_bills();
     load_feedback();
     int ch;
     do{
