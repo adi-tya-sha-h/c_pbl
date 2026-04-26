@@ -48,23 +48,24 @@ void save_inventory(){
     FILE *f=fopen("inventory.txt","w");
     fprintf(f,"%d\n",item_count);
     for(int i=0;i<item_count;i++){
-        fprintf(f,"%s %d %.2f\n",
+        fprintf(f,"%s\n%d\n%.2f\n",
             inventory[i].name,
             inventory[i].stock,
             inventory[i].rate);
     }
     fclose(f);
 }
+
+
 void load_inventory(){
     FILE *f=fopen("inventory.txt","r");
     if(f==NULL) return;
 
     fscanf(f,"%d",&item_count);
     for(int i=0;i<item_count;i++){
-        fscanf(f,"%s %d %f",
-            inventory[i].name,
-            &inventory[i].stock,
-            &inventory[i].rate);
+        fscanf(f,"%[^\n]\n", inventory[i].name);
+        fscanf(f,"%d\n", &inventory[i].stock);
+        fscanf(f,"%f\n", &inventory[i].rate);
     }
     fclose(f);
 }
@@ -76,9 +77,7 @@ void add_item(){
     }
 
     printf("Enter item name: ");
-    scanf(" ");
-    fgets(inventory[item_count].name,50,stdin);
-    inventory[item_count].name[strcspn(inventory[item_count].name,"\n")] = '\0';
+    scanf(" %[^\n]", inventory[item_count].name);
 
     printf("Enter Stock: ");
     scanf("%d",&inventory[item_count].stock);
@@ -201,7 +200,6 @@ void place_order(){
 
     printf("Order placed successfully!\n");
 }
-
 void order_menu(){
     int ch;
     do{
@@ -229,6 +227,7 @@ void save_bills(){
 
     fclose(f);
 }
+
 void generate_bill(){
     if(order_count==0){
         printf("No orders available!\n");
@@ -261,7 +260,7 @@ void generate_bill(){
                 bills[bill_count].total_price);
             printf("--------------------------\n");
             printf("Grand Total: %.2f\n", bills[bill_count].total_price);
-            printf("==========================\n");
+            printf("--------------------------\n");
 
             bill_count++;
             save_bills();
@@ -283,30 +282,28 @@ void bill_menu(){
     }while(ch!=0);
 }
 
-
-
 //FEEDBACK
 void save_feedback(){
     FILE *f=fopen("feedback.txt","w");
     fprintf(f,"%d\n",feedback_count);
     for(int i=0;i<feedback_count;i++){
-        fprintf(f,"%s\n %d\n %s\n",
+        fprintf(f,"%s\n%d\n%s\n",
             feedbacks[i].customer,
             feedbacks[i].rating,
             feedbacks[i].comment);
     }
     fclose(f);
 }
+
 void load_feedback(){
     FILE *f=fopen("feedback.txt","r");
     if(f==NULL) return;
-    fscanf(f,"%d",&feedback_count);
+    fscanf(f,"%d\n",&feedback_count);
     for(int i=0;i<feedback_count;i++){
-        fscanf(f,"%s %d %s",
-            feedbacks[i].customer,
-            &feedbacks[i].rating,
-            feedbacks[i].comment
-            );
+        fscanf(f,"%[^\n]\n", feedbacks[i].customer);
+        fscanf(f,"%d\n",&feedbacks[i].rating);
+        fscanf(f,"%[^\n]\n", feedbacks[i].comment);
+            
     }
     fclose(f);
 }
@@ -317,19 +314,16 @@ void give_feedback(){
         return;
     }
     printf("Enter your name: ");
-    scanf(" ");
-    fgets(feedbacks[feedback_count].customer,50,stdin);
-    feedbacks[feedback_count].customer[strcspn(feedbacks[feedback_count].customer,"\n")] = '\0';
+    scanf(" %[^\n]", feedbacks[feedback_count].customer);
     printf("Enter rating(1-5): ");
     scanf("%d",&feedbacks[feedback_count].rating);
     printf("Enter comment: ");
-    scanf(" ");
-    fgets(feedbacks[feedback_count].comment,100,stdin);
-    feedbacks[feedback_count].comment[strcspn(feedbacks[feedback_count].comment,"\n")] = '\0';
+    scanf(" %[^\n]", feedbacks[feedback_count].comment);
     feedback_count++;
     save_feedback();
     printf("Feedback submitted!");
 }
+
 void view_feedback(){
     if(feedback_count==0){
         printf("No feedback yet!");
@@ -347,6 +341,7 @@ void view_feedback(){
             feedbacks[i].comment);
     }
 }
+
 void feedback_menu(){
     int ch;
     do{
