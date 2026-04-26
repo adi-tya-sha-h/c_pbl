@@ -128,12 +128,12 @@ void save_orders(){
     fprintf(f,"%d\n",order_count);
 
     for(int i=0;i<order_count;i++){
-        fprintf(f,"%d %s %d %d %.2f\n",
-            orders[i].order_id,
-            orders[i].cus_name,
-            orders[i].itemIndex,
-            orders[i].quantity,
-            orders[i].total);
+     fprintf(f,"%d\n%s\n%d %d %.2f\n",
+    orders[i].order_id,
+    orders[i].cus_name,
+    orders[i].itemIndex,
+    orders[i].quantity,
+    orders[i].total);
     }
 
     fclose(f);
@@ -142,12 +142,15 @@ void load_orders(){
     FILE *f = fopen("order.txt","r");
     if(f==NULL) return;
 
-    fscanf(f,"%d",&order_count);
+    fscanf(f,"%d\n",&order_count);
 
     for(int i=0;i<order_count;i++){
-        fscanf(f,"%d %s %d %d %f",
-            &orders[i].order_id,
-            orders[i].cus_name,
+        fscanf(f,"%d\n",&orders[i].order_id);
+
+        fgets(orders[i].cus_name,50,f);
+        orders[i].cus_name[strcspn(orders[i].cus_name,"\n")] = '\0';
+
+        fscanf(f,"%d %d %f\n",
             &orders[i].itemIndex,
             &orders[i].quantity,
             &orders[i].total);
@@ -156,6 +159,10 @@ void load_orders(){
     fclose(f);
 }
 void place_order(){
+    if(order_count>=MAX){
+        printf("Order limit reached!\n");
+        return;
+    }
     if(item_count==0){
         printf("No items available!\n");
         return;
@@ -165,8 +172,9 @@ void place_order(){
     scanf("%d",&orders[order_count].order_id);
 
     printf("Enter Customer Name: ");
-    scanf("%s",orders[order_count].cus_name);
-
+    getchar();
+    fgets(orders[order_count].cus_name,50,stdin);
+    orders[order_count].cus_name[strcspn(orders[order_count].cus_name,"\n")] = '\0';
     view_inventory();
 
     int choice;
@@ -217,18 +225,44 @@ void save_bills(){
     fprintf(f,"%d\n",bill_count);
 
     for(int i=0;i<bill_count;i++){
-        fprintf(f,"%d %s %s %d %.2f\n",
-            bills[i].order_id,
-            bills[i].cus_name,
-            bills[i].item,
-            bills[i].quantity,
-            bills[i].total_price);
+    fprintf(f,"%d\n%s\n%s\n%d %.2f\n",
+    bills[i].order_id,
+    bills[i].cus_name,
+    bills[i].item,
+    bills[i].quantity,
+    bills[i].total_price);
     }
 
     fclose(f);
 }
 
+void load_bills(){
+    FILE *f = fopen("bill.txt","r");
+    if(f==NULL) return;
+
+    fscanf(f,"%d\n",&bill_count);
+
+    for(int i=0;i<bill_count;i++){
+        fscanf(f,"%d\n",&bills[i].order_id);
+
+        fgets(bills[i].cus_name,50,f);
+        bills[i].cus_name[strcspn(bills[i].cus_name,"\n")] = '\0';
+
+        fgets(bills[i].item,50,f);
+        bills[i].item[strcspn(bills[i].item,"\n")] = '\0';
+
+        fscanf(f,"%d %f\n",
+            &bills[i].quantity,
+            &bills[i].total_price);
+    }
+    fclose(f);
+}
+
 void generate_bill(){
+    if(bill_count>=MAX){
+        printf("Bill limit reached!\n");
+        return;
+    }
     if(order_count==0){
         printf("No orders available!\n");
         return;
@@ -366,6 +400,7 @@ void feedback_menu(){
 int main(){
     load_inventory();
     load_orders();
+    load_bills();
     load_feedback();
     int ch;
     do{
