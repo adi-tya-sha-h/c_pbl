@@ -4,7 +4,7 @@
 
 #define MAX 50
 
-// 🔹 Structures
+//Structures
 struct inventoryitem{
     char name[50];
     int stock;
@@ -43,6 +43,7 @@ int item_count=0;
 int feedback_count=0;
 int bill_count= 0;
 
+//INVENTORY
 void save_inventory(){
     FILE *f=fopen("inventory.txt","w");
     fprintf(f,"%d\n",item_count);
@@ -122,7 +123,13 @@ void inventory_menu(){
     } while(ch!=0);
 }
 
+// ORDER
+void save_orders(){
 
+}
+void load_orders(){
+    
+}
 void place_order(){
     if(item_count==0){
         printf("No items available!\n");
@@ -169,6 +176,7 @@ void bills_menu(){
 
 }
 
+//FEEDBACK
 void save_feedback(){
     FILE *f=fopen("feedback.txt","w");
     fprintf(f,"%d\n",feedback_count);
@@ -213,7 +221,6 @@ void give_feedback(){
     save_feedback();
     printf("Feedback submitted!");
 }
-
 void view_feedback(){
     if(feedback_count==0){
         printf("No feedback yet!");
