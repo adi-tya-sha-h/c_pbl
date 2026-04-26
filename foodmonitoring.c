@@ -4,7 +4,7 @@
 
 #define MAX 50
 
-//Structures
+//STRUCTURES
 struct inventoryitem{
     char name[50];
     int stock;
@@ -172,6 +172,7 @@ void order_menu(){
     }while(ch!=0);
 }
 
+//BILL
 void bills_menu(){
 
 }
