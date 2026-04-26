@@ -1,11 +1,11 @@
 # Online Food Monitoring System
-A food tracking system to monitor food orders,restaurant inventory and customer feedback.
+A food tracking system to monitor food orders,restaurant inventory,billing and customer feedback.
 
 
 ## Problem Statement
 Design a food tracking system in C to monitor food orders, restaurant
-inventory, and customer feedback. The system should ensure timely order
-processing and secure data storage.
+inventory,billing and customer feedback. The system should ensure timely order
+processing, accurate bill generation and secure data storage.
 
 ## Problem Description
 In today's fast-paced world, managing a restaurant manually leads to many problems — lost orders, incorrect billing, poor inventory tracking, and no proper way to collect customer feedback. Small and medium restaurants often rely on paper-based systems which are slow, error-prone, and hard to maintain.

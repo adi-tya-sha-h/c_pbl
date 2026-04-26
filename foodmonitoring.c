@@ -56,7 +56,6 @@ void save_inventory(){
     fclose(f);
 }
 
-
 void load_inventory(){
     FILE *f=fopen("inventory.txt","r");
     if(f==NULL) return;
